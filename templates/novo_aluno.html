@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+{% block conteudo %}
+    <form method="POST" action="{{ url_for('criar_novo_aluno') }}">
+        <fieldset>
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
+        </fieldset>
+    </form>
+    <style>
+        fieldset {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-group {
+            width: 50%;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+{% endblock %}
