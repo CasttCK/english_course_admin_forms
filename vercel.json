@@ -2,8 +2,7 @@
   "builds": [
     {
       "src": "./app.py",
-      "use": "@vercel/python",
-      "package": { "include": ["app.py", "templates/*", "static/*"] }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
