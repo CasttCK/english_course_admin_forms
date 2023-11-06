@@ -83,6 +83,10 @@ def logout():
     flash('Logout feito com sucesso!')
     return redirect(url_for('login'))
 
+@app.route('/link-to')
+def link_grupo():
+    return render_template('link_to.html', titulo='Solicite acesso ao grupo de whatsapp')
+
 @app.route('/novo')
 def novo_aluno():
     return render_template('novo_aluno.html', titulo='Cadastre suas informações')
@@ -97,7 +101,7 @@ def criar_novo_aluno():
     db.session.add(novo_usuario)
     db.session.commit()
 
-    return redirect(url_for('index'))
+    return redirect(url_for('link_grupo'))
 
 if(__name__ == '__main__'):
     app.run()
