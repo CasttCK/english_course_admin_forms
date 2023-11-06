@@ -101,7 +101,7 @@ def criar_novo_aluno():
     db.session.add(novo_usuario)
     db.session.commit()
 
-    return redirect(url_for('link_grupo'))
+    return redirect('https://chat.whatsapp.com/IFvJCSOdSuCHV94ERCvG41')
 
 if(__name__ == '__main__'):
     app.run()
