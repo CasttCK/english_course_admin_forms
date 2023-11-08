@@ -1,33 +1,42 @@
 {% extends "template.html" %}
 {% block conteudo %}
-    <form action="{{ url_for('logout') }}">
-        <button class="btn btn-primary" type="submit">Sair</button>
+    <form action="{{ url_for('logout') }}" id="form_logout">
+        <button class="btn btn-primary" id="btn_logout" type="submit">Sair</button>
     </form>
     <table class="table table-striped table-responsive table-bordered">
         <thead class="thead-default">
             <tr>
+                <th>Id</th>
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>Data de cadastro</th>
+                <th>Excluir aluno</th>
             </tr>
         </thead>
         <tbody>
             {% for aluno in alunos %}
             <tr>
+                <td>{{ aluno.id }}</td>
                 <td>{{ aluno.nome }}</td>
                 <td>{{ aluno.email }}</td>
                 <td>{{ aluno.data_cadastro }}</td>
+                <td>
+                    <form action="{{ url_for('excluir_aluno', aluno_id=aluno.id) }}">
+                        <button class="btn btn-danger" type="submit">Excluir</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <style>
-        form {
+
+        #form_logout {
             display: flex;
             justify-content: end;
         }
 
-        button {
+        #btn_logout {
             margin-bottom: 10px;
         }
     </style>
