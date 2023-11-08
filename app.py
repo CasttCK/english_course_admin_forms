@@ -103,5 +103,13 @@ def criar_novo_aluno():
 
     return redirect('https://chat.whatsapp.com/IFvJCSOdSuCHV94ERCvG41')
 
+@app.route('/excluir/<int:aluno_id>')
+def excluir_aluno(aluno_id):
+    aluno_para_excluir = Alunos.query.get(aluno_id)
+    db.session.delete(aluno_para_excluir)
+    db.session.commit()
+
+    return redirect(url_for('index'))
+
 if(__name__ == '__main__'):
     app.run()
