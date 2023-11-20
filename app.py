@@ -9,25 +9,30 @@ from flask import (
 )
 
 from flask_sqlalchemy import SQLAlchemy
+import os
+from dotenv import load_dotenv
 
 import datetime
 
 app = Flask(__name__)
+
+load_dotenv()
+
 app.secret_key = 'aplicacao_forms'
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     'mysql+mysqlconnector://{usuario}:{senha}@{servidor}:{porta}/{database}'
     .format(
-        usuario='root',
-        senha='cbeb6c44B13gbg2AEEdfABdhbg4-F3bb',
-        servidor='viaduct.proxy.rlwy.net',
-        porta='46689',
-        database='forms_admin'
+        usuario=os.getenv('DB_USERNAME'),
+        senha=os.getenv('DB_PASSWORD'),
+        servidor=os.getenv('DB_HOST'),
+        porta=os.getenv('DB_PORT'),
+        database=os.getenv('DB_NAME')
     )
 )
 
 db = SQLAlchemy(app)
 
-class Usuarios(db.Model):
+class FormsAdminUsuarios(db.Model):
     nome = db.Column(db.String(255), nullable=True)
     nickname = db.Column(db.String(20), primary_key=True, nullable=False)  # Corrigido: nullable=False
     senha = db.Column(db.String(100), nullable=False)  # Corrigido: nullable=False
@@ -35,7 +40,7 @@ class Usuarios(db.Model):
     def __repr__(self):
         return '<Name %r>' % self.nickname  # Corrigido: self.nickname
 
-class Alunos(db.Model):
+class FormsAdminAlunos(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(255), nullable=True)
     email = db.Column(db.String(255), nullable=True)
@@ -46,7 +51,7 @@ class Alunos(db.Model):
 
 @app.route('/')
 def index():
-    alunos = Alunos.query.order_by(Alunos.id).all()  # Corrigido: Adicione .all() para obter todos os registros
+    alunos = FormsAdminAlunos.query.order_by(FormsAdminAlunos.id).all()  # Corrigido: Adicione .all() para obter todos os registros
     if 'usuario_logado' not in session or session['usuario_logado'] is None:
         return redirect(url_for('login', proxima=url_for('index')))
 
@@ -59,7 +64,7 @@ def login():
 
 @app.route('/autenticar', methods=['POST'])
 def autenticar_usuario():
-    usuario = Usuarios.query.filter_by(nickname=request.form['usuario']).first()
+    usuario = FormsAdminUsuarios.query.filter_by(nickname=request.form['usuario']).first()
     if usuario:
         if request.form['senha'] == usuario.senha:
             session['usuario_logado'] = usuario.nickname
@@ -97,7 +102,7 @@ def criar_novo_aluno():
     email = request.form['email']
     data_cadastro = datetime.datetime.now()
 
-    novo_usuario = Alunos(nome=nome, email=email, data_cadastro=data_cadastro)
+    novo_usuario = FormsAdminAlunos(nome=nome, email=email, data_cadastro=data_cadastro)
     db.session.add(novo_usuario)
     db.session.commit()
 
@@ -105,7 +110,7 @@ def criar_novo_aluno():
 
 @app.route('/excluir/<int:aluno_id>')
 def excluir_aluno(aluno_id):
-    aluno_para_excluir = Alunos.query.get(aluno_id)
+    aluno_para_excluir = FormsAdminAlunos.query.get(aluno_id)
     db.session.delete(aluno_para_excluir)
     db.session.commit()
 
