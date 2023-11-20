@@ -102,9 +102,15 @@ def criar_novo_aluno():
     email = request.form['email']
     data_cadastro = datetime.datetime.now()
 
-    novo_usuario = FormsAdminAlunos(nome=nome, email=email, data_cadastro=data_cadastro)
-    db.session.add(novo_usuario)
-    db.session.commit()
+    verifica_aluno = FormsAdminAlunos.query.filter_by(email=email).first()
+
+    if(not verifica_aluno):
+        novo_usuario = FormsAdminAlunos(nome=nome, email=email, data_cadastro=data_cadastro)
+        db.session.add(novo_usuario)
+        db.session.commit()
+    else:
+        flash('Email {email} já cadastrado!'.format(email=email))
+        return redirect(url_for('novo_aluno'))
 
     return redirect('https://chat.whatsapp.com/IFvJCSOdSuCHV94ERCvG41')
 
