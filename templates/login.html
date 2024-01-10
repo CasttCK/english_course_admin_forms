@@ -1,12 +1,15 @@
 {% extends "template.html" %}
+
 {% block conteudo %}
-    <div class="container">
+    <div class="container" style="max-width:300px; margin-top: 100px">
         <h1>Faça login</h1>
         <form method="POST" action="{{ url_for('autenticar_usuario') }}">
-            <input type="hidden" name="proxima" value="{{ proxima }}">
-            <p><label>Nome de usuário:</label> <input class="form-control" type="text" name="usuario" required></p>
-            <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
-            <p><button class="btn btn-primary" type="submit">Entrar</button></p>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <input type="hidden" name="proxima" value="{{ proxima }}">
+                <p><label>Nome de usuário:</label> <input class="form-control" type="text" name="usuario" required></p>
+                <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
+                <p><button class="btn btn-primary" type="submit">Entrar</button></p>
+            </div>
         </form>
     </div>
 {% endblock %}
